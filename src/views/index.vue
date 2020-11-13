@@ -82,8 +82,10 @@
                     display: flex;
                     justify-content: center;
                     line-height: 50px;
-                    color: rgba(0, 0, 0, 0.65);
+                    color: #999999;
                     font-size: 14px;
+                    box-shadow: 4px 4px 40px 0 rgba(0, 0, 0, 0.05);
+                    border-top: 1px solid #D8DFEA;
                 }
             }
         }

@@ -7,7 +7,6 @@
             </div>
             <el-table
                     :data="tableData"
-                    height="630"
                     v-loading="tableLoading"
                     element-loading-text="拼命加载中"
             >
@@ -19,10 +18,10 @@
                         <div class="box">
                             <div class="box_list">
                                 <div class="box_title">
-                                    景点名称
+                                    景点英文名称：
                                 </div>
                                 <div class="box_content">
-                                    {{ props.row.name[0] }} / {{ props.row.name[1] }}
+                                    {{ props.row.name_en }}
                                 </div>
                             </div>
                             <div class="box_list">
@@ -164,7 +163,6 @@
                     if (res.data.code === 200) {
                         this.tableData = res.data.data
                         this.tableData.forEach(item => {
-                            item.name = loadsh.split(item.name, '&')
                             item.official_phone = loadsh.split(item.official_phone, '&')
                             item.play_tips = loadsh.split(item.play_tips, '&')
                             item.survey = loadsh.split(item.survey, '&')
@@ -199,14 +197,9 @@
 
 <style lang='less' scoped>
     .container {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
+        width: 100%;
 
         .el-card {
-            width: 90%;
 
             .title {
                 font-size: 16px;
@@ -214,26 +207,25 @@
             }
 
             .box {
-                border: 1px solid red;
-                width: 100%;
+                margin-top: 10px;
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: space-around;
+                padding: 0 5px;
+                justify-content: space-between;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
 
                 .box_list {
+                    width: 50%;
                     display: flex;
                     align-items: center;
-                    width: 35%;
                     margin: 10px 0;
 
                     .box_title {
-                        width: 35%;
                         font-size: 16px;
                         color: #99a9bf;
                     }
 
                     .box_content {
-                        width: 65%;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;

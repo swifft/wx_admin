@@ -1,15 +1,15 @@
 <template>
     <div class="box">
         <div class="box_card">
-          <div class="left">
-              <div>
-                  <strong>当前位置：</strong><el-link :underline="false" href="/">首页</el-link>
-              </div>
-              <div v-for="item in meta">
-                  /<el-link :underline="false" :href="item.url" v-if="item.url">{{item.name}}</el-link>
-                  <span v-else>{{item.name}}</span>
-              </div>
-          </div>
+            <div class="left">
+                <div>
+                    <strong>当前位置：</strong><el-link :underline="false" href="/">首页</el-link>
+                </div>
+                <div v-for="item in meta">
+                    /<el-link :underline="false" :href="item.url" v-if="item.url">{{item.name}}</el-link>
+                    <span v-else>{{item.name}}</span>
+                </div>
+            </div>
             <div class="right" v-if="nowTime"><strong>当前时间：</strong>{{nowTime}}</div>
             <div class="right" v-else>
                 <i class="el-icon-loading"></i>
@@ -60,7 +60,7 @@
         height: 100%;
 
         .box_card {
-            height: 50px;
+            height: 7%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -88,7 +88,9 @@
                 }
             }
         }
+
         .content{
+            height: 90%;
             padding: 10px 0;
         }
     }

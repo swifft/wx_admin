@@ -1,6 +1,8 @@
 const baseConf = {
     address: 'https://wxbsapi.gxnudsl.xyz',
-    uploadAddress: 'https://upload.gxnudsl.xyz'
+    uploadBaseAddress: 'https://upload.gxnudsl.xyz',
+    uploadScenery:'/wxSceneryUpload',
+    uploadBanner:'/wxBannerUpload'
 }
 
 

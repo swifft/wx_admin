@@ -8,7 +8,10 @@
             </div>
             <el-form label-width="300px" :model="form" :rules="rules" ref="form">
                 <el-form-item label="景点名称：" prop="name">
-                    <el-input placeholder="请输入景点名称(中英文请用“ & ”分割)" v-model="form.name"></el-input>
+                    <el-input placeholder="请输入景点名称" v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="景点英文名称：" prop="name_en">
+                    <el-input placeholder="请输入景点英文名称" v-model="form.name_en"></el-input>
                 </el-form-item>
                 <el-form-item label="景点官方网站：">
                     <el-input placeholder="请输入景点官方网站(多个网站请用“ & ”分割)" v-model="form.official_website"></el-input>
@@ -141,7 +144,7 @@
                 // value: [],
                 dialogImageUrl: '',
                 dialogVisible: false,
-                uploadURL: base.uploadAddress + '/wxSceneryUpload',
+                uploadURL: base.uploadBaseAddress + base.uploadScenery,
                 actionType: null,
                 loading: false,
                 pageLoading: false,
@@ -149,6 +152,8 @@
                 form: {
                     // 景点名字
                     name: null,
+                    // 景点英文名字
+                    name_en:null,
                     // 景点概述
                     survey: null,
                     // 景点图片集合
