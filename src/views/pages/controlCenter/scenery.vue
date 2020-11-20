@@ -12,9 +12,6 @@
             >
                 <el-table-column type="expand">
                     <template slot-scope="props">
-                        <div class="title">
-                            景点详细数据
-                        </div>
                         <div class="box">
                             <div class="box_list">
                                 <div class="box_title">

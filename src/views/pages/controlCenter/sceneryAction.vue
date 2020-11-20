@@ -332,6 +332,7 @@
 
         .el-card {
             width: 90%;
+            overflow: auto;
 
             .el-form {
                 display: flex;
