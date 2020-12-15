@@ -5,6 +5,7 @@
         >
             <div slot="header">
                 <span>{{actionType === 'add' ? '添加景点' : '编辑景点' }}</span>
+                <el-button style="float: right" @click="getLocation">快速获取经纬度</el-button>
             </div>
             <el-form label-width="300px" :model="form" :rules="rules" ref="form">
                 <el-form-item label="景点名称：" prop="name">
@@ -13,8 +14,17 @@
                 <el-form-item label="景点英文名称：" prop="name_en">
                     <el-input placeholder="请输入景点英文名称" v-model="form.name_en"></el-input>
                 </el-form-item>
+                <el-form-item label="景点id：" prop="s_id">
+                    <el-input placeholder="请输入景点id" v-model="form.s_id"></el-input>
+                </el-form-item>
                 <el-form-item label="景点官方网站：">
                     <el-input placeholder="请输入景点官方网站(多个网站请用“ & ”分割)" v-model="form.official_website"></el-input>
+                </el-form-item>
+                <el-form-item label="景点经度：" prop="longitude">
+                    <el-input placeholder="请输入景点经度" v-model="form.longitude"></el-input>
+                </el-form-item>
+                <el-form-item label="景点纬度：" prop="latitude">
+                    <el-input placeholder="请输入景点纬度" v-model="form.latitude"></el-input>
                 </el-form-item>
                 <el-form-item label="景点官方电话：">
                     <el-input placeholder="请输入景点官方电话(多个号码请用“ & ”分割)" v-model="form.official_phone"></el-input>
@@ -154,6 +164,12 @@
                     name: null,
                     // 景点英文名字
                     name_en:null,
+                    // 景点 id
+                    s_id:null,
+                    // 景点经度
+                    longitude:null,
+                    //景点纬度
+                    latitude:null,
                     // 景点概述
                     survey: null,
                     // 景点图片集合
@@ -317,6 +333,21 @@
                         this.pageLoading = false
                     }
                 })
+            },
+            getLocation(){
+                if (this.form.name){
+                    this.$axios.get(base.address + '/api/v1/scenery/getSceneryLocation?sceneryName='+ this.form.name ).then(res => {
+                        if (res.data.code === 200) {
+                            this.form.latitude = res.data.data.location.lat
+                            this.form.longitude = res.data.data.location.lng
+                            if (res.data.data.info != '信息查询准确'){
+                                this.$message.warning('获取的该经纬度不一定精准')
+                            }
+                        }
+                    })
+                }else {
+                    this.$message.error('请先填写景点名称')
+                }
             }
         },
     };
