@@ -90,7 +90,7 @@
                 </el-table-column>
                 <el-table-column
                         label="景点名称"
-                        prop="name[0]"
+                        prop="name"
                         width="130"
                 >
                 </el-table-column>

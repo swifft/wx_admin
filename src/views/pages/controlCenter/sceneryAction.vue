@@ -5,26 +5,30 @@
         >
             <div slot="header">
                 <span>{{actionType === 'add' ? '添加景点' : '编辑景点' }}</span>
-                <el-button style="float: right" @click="getLocation">快速获取经纬度</el-button>
+                <el-button style="float: right" @click="getLocation" v-show="actionType != 'edit'">快速获取经纬度</el-button>
             </div>
             <el-form label-width="300px" :model="form" :rules="rules" ref="form">
                 <el-form-item label="景点名称：" prop="name">
-                    <el-input placeholder="请输入景点名称" v-model="form.name"></el-input>
+                    <el-input placeholder="请输入景点名称" v-model="form.name" :disabled="actionType === 'edit'"></el-input>
                 </el-form-item>
-                <el-form-item label="景点英文名称：" prop="name_en">
-                    <el-input placeholder="请输入景点英文名称" v-model="form.name_en"></el-input>
+                <el-form-item label="景点英文名称：">
+                    <el-input placeholder="请输入景点英文名称" v-model="form.name_en" :disabled="actionType === 'edit'"></el-input>
                 </el-form-item>
                 <el-form-item label="景点id：" prop="s_id">
-                    <el-input placeholder="请输入景点id" v-model="form.s_id"></el-input>
+                    <el-input placeholder="请输入景点id" v-model="form.s_id" :style="actionType === 'edit' ? '' : 'width: 70%'" :disabled="actionType === 'edit'"></el-input>
+                    <el-button style="float: right" @click="getRandomId" v-show="actionType != 'edit'">随机生成</el-button>
                 </el-form-item>
                 <el-form-item label="景点官方网站：">
                     <el-input placeholder="请输入景点官方网站(多个网站请用“ & ”分割)" v-model="form.official_website"></el-input>
                 </el-form-item>
                 <el-form-item label="景点经度：" prop="longitude">
-                    <el-input placeholder="请输入景点经度" v-model="form.longitude"></el-input>
+                    <el-input placeholder="请输入景点经度" v-model="form.longitude" :disabled="actionType === 'edit'"></el-input>
                 </el-form-item>
                 <el-form-item label="景点纬度：" prop="latitude">
-                    <el-input placeholder="请输入景点纬度" v-model="form.latitude"></el-input>
+                    <el-input placeholder="请输入景点纬度" v-model="form.latitude" :disabled="actionType === 'edit'"></el-input>
+                </el-form-item>
+                <el-form-item label="景点地址：" prop="address">
+                    <el-input placeholder="请输入景点地址" v-model="form.address" :disabled="actionType === 'edit'"></el-input>
                 </el-form-item>
                 <el-form-item label="景点官方电话：">
                     <el-input placeholder="请输入景点官方电话(多个号码请用“ & ”分割)" v-model="form.official_phone"></el-input>
@@ -32,12 +36,24 @@
                 <el-form-item label="景点排名：">
                     <el-input-number v-model="form.survey_sort" controls-position="right" :min="1"></el-input-number>
                 </el-form-item>
+                <el-form-item label="景点人气排名：">
+                    <el-input-number v-model="form.hotSort" controls-position="right" :min="1"></el-input-number>
+                </el-form-item>
+                <el-form-item label="景点热度值：">
+                    <el-input-number v-model="form.heat" controls-position="right" :min="1"></el-input-number>
+                </el-form-item>
+                <el-form-item label="景点级别：">
+                    <el-input-number v-model="form.rank" controls-position="right" :min="1" :max="5"></el-input-number>
+                </el-form-item>
                 <el-form-item label="景点星级：">
                     <el-rate v-model="form.survey_start" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
                              style="line-height: 50px"></el-rate>
                 </el-form-item>
                 <el-form-item label="景点人气：">
                     <el-input placeholder="请输入景点人气" v-model="form.popularity"></el-input>
+                </el-form-item>
+                <el-form-item label="景点代言词：">
+                    <el-input placeholder="请输入景点代言词" v-model="form.pronoun"></el-input>
                 </el-form-item>
                 <el-form-item label="景点评分：">
                     <el-input-number v-model="form.score" controls-position="right" :min="1" :max="5" :precision="1"
@@ -133,7 +149,7 @@
                 <img width="100%" :src="dialogImageUrl" alt="">
             </el-dialog>
             <div style="display:flex;justify-content: center;margin-top: 10px">
-                <el-button @click="getContent" type="primary" round style="width: 200px;" :loading="loading">提交
+                <el-button @click="getContent" type="primary" round style="width: 200px;" >提交
                 </el-button>
             </div>
         </el-card>
@@ -163,13 +179,21 @@
                     // 景点名字
                     name: null,
                     // 景点英文名字
-                    name_en:null,
+                    name_en: null,
                     // 景点 id
-                    s_id:null,
+                    s_id: null,
                     // 景点经度
-                    longitude:null,
+                    longitude: null,
                     //景点纬度
-                    latitude:null,
+                    latitude: null,
+                    //景点地址
+                    address: null,
+                    //景点代言词
+                    pronoun: null,
+                    // 景点级别
+                    rank: null,
+                    // 景点热度
+                    heat: null,
                     // 景点概述
                     survey: null,
                     // 景点图片集合
@@ -188,6 +212,8 @@
                     score: null,
                     // 景点人气
                     popularity: null,
+                    // 景点人气排行
+                    hotSort: null,
                     // 景点官方网站
                     official_website: null,
                     // 景点官方电话
@@ -207,8 +233,20 @@
                     name: [
                         {required: true, message: '请输入景点名称', trigger: 'blur'},
                     ],
+                    s_id: [
+                        {required: true, message: '请输入景点id', trigger: 'blur'},
+                    ],
+                    longitude: [
+                        {required: true, message: '请输入景点经度', trigger: 'blur'},
+                    ],
+                    latitude: [
+                        {required: true, message: '请输入景点纬度', trigger: 'blur'},
+                    ],
                     survey: [
                         {required: true, message: '请输入景点概要', trigger: 'blur'},
+                    ],
+                    address: [
+                        {required: true, message: '请输入景点地址', trigger: 'blur'},
                     ],
                 }
             };
@@ -284,6 +322,8 @@
                                     setTimeout(() => {
                                         this.$router.push('/controlCenter/scenery')
                                     }, 500)
+                                }else {
+                                    this.$message.error(res.data.data)
                                 }
                             })
                         } else {
@@ -341,13 +381,19 @@
                             this.form.latitude = res.data.data.location.lat
                             this.form.longitude = res.data.data.location.lng
                             if (res.data.data.info != '信息查询准确'){
-                                this.$message.warning('获取的该经纬度不一定精准')
+                                this.$message.warning('获取的该经纬度不一定精准,经供参考')
+                            }else{
+                                this.$message.success('获取的该经纬度精准')
                             }
                         }
                     })
                 }else {
-                    this.$message.error('请先填写景点名称')
+                    this.$message.error('请先填写景点名称然后获取经纬度')
                 }
+            },
+            getRandomId(){
+                const randomData = Math.random().toString(36).substr(2)
+                this.form.s_id = randomData
             }
         },
     };
