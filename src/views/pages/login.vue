@@ -17,14 +17,14 @@
           <el-input type="text" v-model="Form.account"  prefix-icon="el-icon-user" placeholder="请输入账号"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" v-model="Form.password"  prefix-icon="el-icon-lock" show-password placeholder="请输入密码"></el-input>
+          <el-input type="password" v-model="Form.password"  prefix-icon="el-icon-lock" show-password placeholder="请输入密码" @keyup.enter.native="submitForm"></el-input>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="checked" style="float: left">记住我</el-checkbox>
           <el-link type="primary" :underline="false" style="float:right">忘记密码？</el-link>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm()" class="btn">登录</el-button>
+          <el-button type="primary" @click="submitForm" class="btn">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -52,9 +52,11 @@ export default {
     };
   },
   mounted() {
-    const userInfo = cookie.getJSON('userInfo')
-    this.Form.account = userInfo.account
-    this.Form.password = userInfo.password
+    const accountInfo = cookie.getJSON('accountInfo')
+    if (accountInfo) {
+      this.Form.account = accountInfo.account
+      this.Form.password = accountInfo.password
+    }
   },
   methods: {
     submitForm() {
@@ -66,14 +68,14 @@ export default {
             password:this.Form.password
           }
           if (this.checked){
-            cookie.set('userInfo', accountInfo, {expires: 7});
+            cookie.set('accountInfo', accountInfo, {expires: 7});
           }else {
-            cookie.remove('userInfo')
+            cookie.remove('accountInfo')
           }
           this.$axios.post(`${config.address}/api/v1/user/login`,accountInfo).then(res=>{
             if (res.status === 200 && res.data.msg === '处理成功') {
               if (!cookie.get('user')) {
-                cookie.set('user', res.data, { expires: 1 });
+                cookie.set('user', res.data.data, { expires: 1 });
               }
               if (localStorage.getItem('userToken')){
                 localStorage.removeItem('userToken')
@@ -98,7 +100,7 @@ export default {
     },
     resetForm() {
       this.$refs.ruleForm.resetFields();
-    },
+    }
   },
 };
 </script>

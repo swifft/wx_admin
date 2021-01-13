@@ -44,16 +44,16 @@
                     <div class="box-action">排序：
                         <el-input v-model="item.sort" style="width: 50px;" size="mini"></el-input>
                     </div>
-                    <div class="box-action">点击跳转页面：
-                        <el-select v-model="item.aboutPage" placeholder="请选择" size="mini">
-                            <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </div>
+<!--                    <div class="box-action">点击跳转页面：-->
+<!--                        <el-select v-model="item.aboutPage" placeholder="请选择" size="mini">-->
+<!--                            <el-option-->
+<!--                                    v-for="item in options"-->
+<!--                                    :key="item.value"-->
+<!--                                    :label="item.label"-->
+<!--                                    :value="item.value">-->
+<!--                            </el-option>-->
+<!--                        </el-select>-->
+<!--                    </div>-->
                 </el-card>
             </div>
         </el-card>
@@ -75,20 +75,7 @@
                     label: '双皮奶'
                 }],
                 uploadURL: base.uploadBaseAddress + base.uploadBanner,
-                list: [
-                    {
-                        indexNow: null,
-                        src: 'https://file.gxnudsl.xyz/websiteResource/backgroundImage/7.jpg',
-                        sort: 0,
-                        aboutPage: "选项一"
-                    },
-                    {
-                        indexNow: null,
-                        src: 'https://file.gxnudsl.xyz/websiteResource/backgroundImage/9.jpg',
-                        sort: 0,
-                        aboutPage: "选项一"
-                    }
-                ]
+                list: []
             };
         },
         mounted() {
@@ -97,14 +84,22 @@
         },
         methods: {
             getData() {
-
+                this.$axios.get(base.address + '/api/v1/common/getAllBannerPC').then(res =>{
+                    if (res.data.code === 200) {
+                        this.list = res.data.data[0].list
+                        console.log(this.list)
+                    }
+                }).catch(error =>{
+                    console.log(error)
+                })
             },
             deleteImage(index) {
                 this.list[index].indexNow = index
-                // console.log(index)
+                this.list[index].src = null
             },
             deleteBanner(index) {
-                console.log(index)
+                this.list.splice(index,1)
+                console.log(this.list)
             },
             handleSuccess(index, value) {
                 this.list[index].indexNow = null
@@ -112,7 +107,20 @@
                 console.log(index, value)
             },
             save() {
-                // console.log(this.sort,this.aboutPage)
+                if (this.list.length > 0){
+                    this.$axios.post(base.address + '/api/v1/common/editBanner',{list:this.list,_id:'5feafb4bc22186d7b516ff2e'}).then(res =>{
+                        if (res.data.code === 200){
+                            this.$notify({
+                                title: '提示信息',
+                                message:'保存成功',
+                                type: 'success',
+                                duration:1000
+                            });
+                        }
+                    }).catch(error =>{
+                        console.log(error)
+                    })
+                }
             },
             add() {
                 const newBanner = {

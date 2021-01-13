@@ -11,7 +11,7 @@
                 <div class="top">
                     <ContentTab/>
                 </div>
-                <div class="footer">Mr.D Design ©2020 Power by Element UED</div>
+                <div class="footer">Mr.D Design ©2021 Power by Element UED</div>
             </div>
         </div>
     </div>
