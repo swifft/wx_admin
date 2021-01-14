@@ -8,6 +8,7 @@ import banner from '@/views/pages/controlCenter/banner'
 import scenery from '@/views/pages/controlCenter/scenery'
 import ad from '@/views/pages/controlCenter/ad'
 import sceneryAction from "@/views/pages/controlCenter/sceneryAction";
+import examineConfig from "@/views/pages/examineConfig";
 
 Vue.use(VueRouter)
 
@@ -77,6 +78,14 @@ const router = new VueRouter({
             opinions: [{ name: '控制中心', url: null }, { name: '页面广告配置', url: '/controlCenter/ad' }]
           }
         },
+        {
+          path: '/examineConfig',
+          component: examineConfig,
+          meta: {
+            title: '审核管理',
+            opinions: [{ name: '审核管理', url: '/examineConfig' }]
+          }
+        }
       ]
     }
   ]

@@ -54,9 +54,9 @@
           <span slot="title">数据接口统计</span>
         </el-menu-item>
       </el-submenu>
-      <el-menu-item index="4">
-        <i class="el-icon-s-data"></i>
-        <span slot="title">可视化</span>
+      <el-menu-item index="/examineConfig">
+        <i class="el-icon-document-checked"></i>
+        <span slot="title">审核管理</span>
       </el-menu-item>
       <el-submenu index="5">
         <template slot="title">

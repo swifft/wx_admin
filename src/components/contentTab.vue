@@ -2,10 +2,10 @@
     <div class="box">
         <div class="box_card">
             <div class="left">
-                <div>
+                <div style="line-height: 20px">
                     <strong>当前位置：</strong><el-link :underline="false" href="/">首页</el-link>
                 </div>
-                <div v-for="item in meta">
+                <div v-for="item in meta" style="line-height: 20px">
                     /<el-link :underline="false" :href="item.url" v-if="item.url">{{item.name}}</el-link>
                     <span v-else>{{item.name}}</span>
                 </div>
@@ -68,7 +68,9 @@
             background-color: white;
 
             .left{
+                height: 20px;
                 display: flex;
+
                 strong{
                     font-size: 14px;
                 }
