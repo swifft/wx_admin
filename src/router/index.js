@@ -6,9 +6,11 @@ import login from '@/views/pages/login'
 import notFound from '@/views/pages/notFound'
 import banner from '@/views/pages/controlCenter/banner'
 import scenery from '@/views/pages/controlCenter/scenery'
-import ad from '@/views/pages/controlCenter/ad'
+import ticket from '@/views/pages/controlCenter/ticket'
 import sceneryAction from "@/views/pages/controlCenter/sceneryAction";
 import examineConfig from "@/views/pages/examineConfig";
+import interfaceTotal from "@/views/pages/dataCenter/interfaceTotal";
+import interfaceAction from "@/views/pages/dataCenter/interfaceAction";
 
 Vue.use(VueRouter)
 
@@ -67,15 +69,31 @@ const router = new VueRouter({
           component: sceneryAction,
           meta: {
             title: '景点',
-            opinions: [{ name: '控制中心', url: null }, { name: '页面景点配置', url: '/controlCenter/scenery' }, { name: '景点', url: '/controlCenter/scenery/sceneryAction' }]
+            opinions: [{ name: '控制中心', url: null }, { name: '页面景点配置', url: '/controlCenter/scenery' }, { name: '景点信息操作', url: '/controlCenter/scenery/sceneryAction' }]
           }
         },
         {
-          path: '/controlCenter/ad',
-          component: ad,
+          path: '/controlCenter/ticket',
+          component: ticket,
           meta: {
-            title: '页面广告配置',
-            opinions: [{ name: '控制中心', url: null }, { name: '页面广告配置', url: '/controlCenter/ad' }]
+            title: '页面门票配置',
+            opinions: [{ name: '控制中心', url: null }, { name: '页面门票配置', url: '/controlCenter/ticket' }]
+          }
+        },
+        {
+          path: '/dataCenter/interfaceTotal',
+          component: interfaceTotal,
+          meta: {
+            title: '接口数据统计',
+            opinions: [{ name: '数据中心', url: null }, { name: '接口数据统计', url: '/dataCenter/interfaceTotal' }]
+          }
+        },
+        {
+          path: '/dataCenter/interfaceTotal/interfaceAction',
+          component: interfaceAction,
+          meta: {
+            title: '接口数据操作',
+            opinions: [{ name: '数据中心', url: null }, { name: '接口数据统计', url: '/dataCenter/interfaceTotal' }, { name: '接口数据操作', url: '/dataCenter/interfaceTotal/interfaceAction' }]
           }
         },
         {

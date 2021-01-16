@@ -32,7 +32,6 @@
 </template>
 
 <script>
-  import cookie from 'js-cookie'
   import config from '../../untils/base'
 
 export default {
@@ -52,7 +51,7 @@ export default {
     };
   },
   mounted() {
-    const accountInfo = cookie.getJSON('accountInfo')
+    const accountInfo = this.$cookie.getJSON('accountInfo')
     if (accountInfo) {
       this.Form.account = accountInfo.account
       this.Form.password = accountInfo.password
@@ -68,29 +67,34 @@ export default {
             password:this.Form.password
           }
           if (this.checked){
-            cookie.set('accountInfo', accountInfo, {expires: 7});
+            this.$cookie.set('accountInfo', accountInfo, {expires: 7});
           }else {
-            cookie.remove('accountInfo')
+            this.$cookie.remove('accountInfo')
           }
           this.$axios.post(`${config.address}/api/v1/user/login`,accountInfo).then(res=>{
             if (res.status === 200 && res.data.msg === '处理成功') {
-              if (!cookie.get('user')) {
-                cookie.set('user', res.data.data, { expires: 1 });
+              if (res.data.data){
+                if (!this.$cookie.get('user')) {
+                  this.$cookie.set('user', res.data.data, { expires: 1 });
+                }
+                if (localStorage.getItem('userToken')){
+                  localStorage.removeItem('userToken')
+                }
+                localStorage.setItem('userToken',res.data.data.token)
+                this.$notify({
+                  title: '提示信息',
+                  message:'登陆成功,正在跳转...',
+                  type: 'success',
+                  duration:1000
+                });
+                setTimeout(()=>{
+                  this.$router.push('/')
+                },500)
               }
-              if (localStorage.getItem('userToken')){
-                localStorage.removeItem('userToken')
-              }
-              localStorage.setItem('userToken',res.data.data.token)
-              this.$notify({
-                title: '提示信息',
-                message:'登陆成功,正在跳转...',
-                type: 'success',
-                duration:1000
-              });
-              setTimeout(()=>{
-                this.$router.push('/')
-              },500)
+            }else {
+              this.$message.error(res.data.msg);
             }
+            this.isLoading = false
           })
         } else {
           this.$message.error("请仔细填写");

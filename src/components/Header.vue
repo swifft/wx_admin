@@ -3,7 +3,7 @@
     <div class="box">
       <div class="title">小程序后台管理系统</div>
       <div class="user" v-if="user">
-        欢迎管理员：{{user.account}}
+        欢迎{{user.authority === 0 ? '管理员' : '超级管理员'}}：{{user.account}}
         <div class="loginOut">
           <el-button type="info" icon="el-icon-switch-button" circle size="mini" @click="exit"></el-button>
         </div>
@@ -13,7 +13,6 @@
 </template>
 
 <script>
-  import cookie from "js-cookie"
   import {Message} from "element-ui";
 
 export default {
@@ -28,8 +27,8 @@ export default {
   },
   methods: {
     getUserInfo(){
-      if (cookie.get('user')){
-        this.user = cookie.getJSON('user').userInfo
+      if (this.$cookie.get('user')){
+        this.user = this.$cookie.getJSON('user').userInfo
       }else {
         Message.error('您还未登录,请先登陆');
         setTimeout(() => {
@@ -43,7 +42,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        cookie.remove("user")
+        this.$cookie.remove("user")
         localStorage.removeItem('userToken')
         window.location.href = '/login'
       })

@@ -31,9 +31,9 @@
           <i class="el-icon-s-tools"></i>
           <span slot="title">页面景点配置</span>
         </el-menu-item>
-        <el-menu-item index="/controlCenter/ad">
+        <el-menu-item index="/controlCenter/ticket">
           <i class="el-icon-s-tools"></i>
-          <span slot="title">页面广告配置</span>
+          <span slot="title">页面门票配置</span>
         </el-menu-item>
       </el-submenu>
       <el-submenu index="3">
@@ -49,9 +49,9 @@
           <i class="el-icon-s-order"></i>
           <span slot="title">用户数量统计</span>
         </el-menu-item>
-        <el-menu-item index="3-3">
+        <el-menu-item index="/dataCenter/interfaceTotal">
           <i class="el-icon-s-order"></i>
-          <span slot="title">数据接口统计</span>
+          <span slot="title">接口数据统计</span>
         </el-menu-item>
       </el-submenu>
       <el-menu-item index="/examineConfig">
