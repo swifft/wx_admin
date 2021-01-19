@@ -37,10 +37,11 @@ export default {
       }
     },
     exit(){
-      this.$confirm('此操作将退出系统, 是否继续?', '提示', {
+      this.$confirm('注销登录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        closeOnClickModal:false
       }).then(() => {
         this.$cookie.remove("user")
         localStorage.removeItem('userToken')

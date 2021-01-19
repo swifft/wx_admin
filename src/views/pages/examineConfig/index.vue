@@ -4,7 +4,6 @@
             <el-tab-pane label="未审核">
                 <el-table
                         :data="tableData"
-                        height="650"
                 >
                     <el-table-column
                             label="日期"
@@ -57,11 +56,18 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <el-pagination
+                        style="margin-top: 10px"
+                        background
+                        layout="prev, pager, next, jumper"
+                        :total="total"
+                        @current-change="(e)=>getCurrentPage(e,0)"
+                >
+                </el-pagination>
             </el-tab-pane>
             <el-tab-pane label="审核中">
                 <el-table
                         :data="tableData"
-                        height="650"
                 >
                     <el-table-column
                             label="日期"
@@ -119,6 +125,13 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <el-pagination
+                        background
+                        layout="prev, pager, next, jumper"
+                        :total="total"
+                        @current-change="(e)=>getCurrentPage(e,1)"
+                >
+                </el-pagination>
             </el-tab-pane>
             <el-tab-pane label="审核通过">
                 <el-table
@@ -165,6 +178,13 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <el-pagination
+                        background
+                        layout="prev, pager, next, jumper"
+                        :total="total"
+                        @current-change="(e)=>getCurrentPage(e,2)"
+                >
+                </el-pagination>
             </el-tab-pane>
             <el-tab-pane label="审核不通过">
                 <el-table
@@ -216,6 +236,13 @@
                             label="原因">
                     </el-table-column>
                 </el-table>
+                <el-pagination
+                        background
+                        layout="prev, pager, next, jumper"
+                        :total="total"
+                        @current-change="(e)=>getCurrentPage(e,3)"
+                >
+                </el-pagination>
             </el-tab-pane>
         </el-tabs>
         <photo-swiper :images="imgPreviewList" @close="imgPreviewClose" :pageIndex="{ position: 'center' }"
@@ -257,13 +284,18 @@
                 tableData: [],
                 isShowImgPreview: false,
                 imgPreviewList: [],
-                isShowDialog:false,
-                isShowNoExamine:false,
-                previewArticleContent:null,
-                form:{
-                    id:null,
-                    statusTips:null
-                }
+                isShowDialog: false,
+                isShowNoExamine: false,
+                previewArticleContent: null,
+                form: {
+                    id: null,
+                    statusTips: null
+                },
+                total: 0,
+                pageSize_0: 1,
+                pageSize_1: 1,
+                pageSize_2: 3,
+                pageSize_3: 1,
             }
         },
         mounted() {
@@ -276,16 +308,36 @@
             },
             getData(status = 0) {
                 this.tableData = []
-                this.$axios.get(`${base.address}/api/v1/records/PC/getAll?status=${status}`).then(res => {
+                let pageSize;
+                switch (status) {
+                    case 0:
+                        pageSize = this.pageSize_0;
+                        break;
+                    case 1:
+                        pageSize = this.pageSize_1;
+                        break;
+                    case 2:
+                        pageSize = this.pageSize_2;
+                        break;
+                    case 3:
+                        pageSize = this.pageSize_3;
+                        break;
+                    default:
+                        break;
+                }
+                this.$axios.get(`${base.address}/api/v1/records/PC/getAll?status=${status}&pageSize=10&page=${pageSize}`).then(res => {
                     if (res.data.code === 200) {
-                        this.tableData = res.data.data
+                        this.tableData = res.data.data.list
+                        this.total = res.data.data.total
                         this.tableData.forEach(item => {
                             item.create_time = this.$moment(item.create_time).format("YYYY-MM-DD HH:mm:ss");
                         })
+                        console.log(this.tableData)
                     }
                 })
             },
             previewImg(imagesURL) {
+                console.log(imagesURL)
                 this.imgPreviewList = []
                 let newImagesURL = {}
                 let newImagesURLList = []
@@ -305,57 +357,80 @@
                 this.previewArticleContent = article
                 this.isShowDialog = true
             },
-            dialogClose(){
+            dialogClose() {
                 this.isShowNoExamine = false,
-                this.isShowDialog = false
+                    this.isShowDialog = false
             },
-            getExamine(id,status){
-                this.$confirm( status === 1 ? '发起文章审核, 是否继续?' : '文章审核通过, 是否继续?', '提示', {
+            getExamine(id, status) {
+                this.$confirm(status === 1 ? '发起文章审核, 是否继续?' : '文章审核通过, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     console.log(id)
                     const params = {
-                        id : id,
+                        id: id,
                         status: status
                     }
-                    this.$axios.post(`${base.address}/api/v1/records/PC/editStatus`,params).then(res => {
+                    this.$axios.post(`${base.address}/api/v1/records/PC/editStatus`, params).then(res => {
                         if (res.data.code === 200) {
                             this.$notify.success({
                                 title: '提示',
                                 showClose: false,
                                 message: '请求成功,正在刷新列表。。。',
                                 duration: 1000,
-                                onClose:()=>{
+                                onClose: () => {
                                     this.getData(status - 1)
                                 }
                             });
                         }
                     })
-                }).catch(()=>{})
+                }).catch(() => {
+                })
             },
-            getNoExamine(id){
+            getNoExamine(id) {
                 this.isShowNoExamine = true
                 this.form.id = id
 
             },
-            noExamineSubmit(){
+            noExamineSubmit() {
                 this.isShowNoExamine = false
                 this.form.status = 3
-                this.$axios.post(`${base.address}/api/v1/records/PC/editStatus`,this.form).then(res => {
+                this.$axios.post(`${base.address}/api/v1/records/PC/editStatus`, this.form).then(res => {
                     if (res.data.code === 200) {
                         this.$notify.success({
                             title: '提示',
                             showClose: false,
                             message: '请求成功,正在刷新列表。。。',
                             duration: 1000,
-                            onClose:()=>{
+                            onClose: () => {
                                 this.getData(1)
                             }
                         });
                     }
                 })
+            },
+            getCurrentPage(e,status){
+                switch (status) {
+                    case 0:
+                        this.pageSize_0 = e;
+                        this.getData(status);
+                        break;
+                    case 1:
+                        this.pageSize_1 = e;
+                        this.getData(status);
+                        break;
+                    case 2:
+                        this.pageSize_2 = e;
+                        this.getData(status);
+                        break;
+                    case 3:
+                        this.pageSize_3 = e;
+                        this.getData(status);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -364,6 +439,6 @@
 <style scoped lang="less">
     .container {
         height: 100%;
-        padding: 0 30px;
+        padding: 15px 30px;
     }
 </style>

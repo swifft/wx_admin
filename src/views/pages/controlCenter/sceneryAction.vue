@@ -114,7 +114,8 @@
                 </el-form-item>
                 <el-form-item label="已上传景点图片：" style="width: 100%" v-if="actionType === 'edit'">
                     <el-image
-                            v-for="item in form.imagesURL"
+                            v-for="(item,index) in form.imagesURL"
+                            :key="index"
                             style="width: 100px; height: 100px;margin: 0 5px"
                             :src="item"
                             :preview-src-list="form.imagesURL"
@@ -367,7 +368,7 @@
             },
             getData(id) {
                 this.pageLoading = true
-                this.$axios.get(base.address + `/api/v1/scenery/getList?id=${id}`).then(res => {
+                this.$axios.get(base.address + `/api/v1/scenery/getList_PC?id=${id}`).then(res => {
                     if (res.data.code === 200) {
                         this.form = res.data.data
                         this.pageLoading = false

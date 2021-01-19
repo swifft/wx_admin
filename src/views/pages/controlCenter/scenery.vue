@@ -155,7 +155,7 @@
         methods: {
             getData() {
                 this.tableLoading = true
-                this.$axios.get(base.address + '/api/v1/scenery/getList').then(res => {
+                this.$axios.get(base.address + '/api/v1/scenery/getList_PC').then(res => {
                     console.log(res)
                     if (res.data.code === 200) {
                         this.tableData = res.data.data

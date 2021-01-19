@@ -11,6 +11,8 @@ import sceneryAction from "@/views/pages/controlCenter/sceneryAction";
 import examineConfig from "@/views/pages/examineConfig";
 import interfaceTotal from "@/views/pages/dataCenter/interfaceTotal";
 import interfaceAction from "@/views/pages/dataCenter/interfaceAction";
+import personal from "@/views/pages/systemCenter/personal";
+import systemAuthority from "../views/pages/systemCenter/systemAuthority";
 
 Vue.use(VueRouter)
 
@@ -102,6 +104,22 @@ const router = new VueRouter({
           meta: {
             title: '审核管理',
             opinions: [{ name: '审核管理', url: '/examineConfig' }]
+          }
+        },
+        {
+          path: '/systemCenter/personal',
+          component: personal,
+          meta: {
+            title: '个人中心',
+            opinions: [{ name: '系统中心', url: null }, { name: '个人中心', url: '/systemCenter/personal' }]
+          }
+        },
+        {
+          path: '/systemCenter/systemAuthority',
+          component: systemAuthority,
+          meta: {
+            title: '系统权限中心',
+            opinions: [{ name: '系统中心', url: null }, { name: '系统权限中心', url: '/systemCenter/systemAuthority' }]
           }
         }
       ]

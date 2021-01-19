@@ -35,7 +35,7 @@
             <el-collapse accordion style="padding: 0 15px" v-if="dataMiniApp">
                 <el-collapse-item v-for="(item, index) in dataMiniApp" :key="index">
                     <template slot="title" v-if="item.sort">
-                        <div style="font-size: 16px;">{{item.sort}} <span style="font-weight: bold;margin-left: 20px;font-size: 14px">统一前缀：{{item.data[0].prefix}}</span></div>
+                        <div style="font-size: 16px;">{{item.sort}} <span style="font-weight: bold;margin-left: 20px;font-size: 14px;color: #909399">统一前缀：{{item.data[0].prefix}}</span></div>
                     </template>
                     <div class="apiMain" v-for="(i_item, i_index) in item.data" :key="i_index">
                         <div class="left">

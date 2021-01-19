@@ -63,15 +63,11 @@
           <i class="el-icon-location"></i>
           <span>系统中心</span>
         </template>
-        <el-menu-item index="5-1">
+        <el-menu-item index="/systemCenter/systemAuthority" v-show="user.authority === 1">
           <i class="el-icon-menu"></i>
           <span slot="title">系统权限配置</span>
         </el-menu-item>
-        <el-menu-item index="5-2">
-          <i class="el-icon-menu"></i>
-          <span slot="title">系统设置</span>
-        </el-menu-item>
-        <el-menu-item index="5-3">
+        <el-menu-item index="/systemCenter/personal">
           <i class="el-icon-menu"></i>
           <span slot="title">个人中心</span>
         </el-menu-item>
@@ -85,8 +81,12 @@ export default {
   data() {
     return {
       isCollapse: false,
+      user:null
     };
   },
+  created() {
+    this.user = this.$cookie.getJSON('user').userInfo
+  }
 };
 </script>
 
