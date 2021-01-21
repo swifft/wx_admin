@@ -51,6 +51,7 @@
                         <el-button
                                 size="mini"
                                 type="danger"
+                                v-if="scope.row.authority !== 1"
                                 @click="deleteUser(scope.row._id)">删除用户
                         </el-button>
                     </template>

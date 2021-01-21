@@ -126,6 +126,7 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
+                        style="margin-top: 10px"
                         background
                         layout="prev, pager, next, jumper"
                         :total="total"
@@ -136,7 +137,6 @@
             <el-tab-pane label="审核通过">
                 <el-table
                         :data="tableData"
-                        height="650"
                 >
                     <el-table-column
                             label="日期"
@@ -179,6 +179,7 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
+                        style="margin-top: 10px"
                         background
                         layout="prev, pager, next, jumper"
                         :total="total"
@@ -189,7 +190,6 @@
             <el-tab-pane label="审核不通过">
                 <el-table
                         :data="tableData"
-                        height="650"
                 >
                     <el-table-column
                             label="日期"
@@ -237,6 +237,7 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
+                        style="margin-top: 10px"
                         background
                         layout="prev, pager, next, jumper"
                         :total="total"
