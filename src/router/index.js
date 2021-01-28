@@ -13,6 +13,7 @@ import interfaceTotal from "@/views/pages/dataCenter/interfaceTotal";
 import interfaceAction from "@/views/pages/dataCenter/interfaceAction";
 import personal from "@/views/pages/systemCenter/personal";
 import systemAuthority from "../views/pages/systemCenter/systemAuthority";
+import ticketAction from "../views/pages/controlCenter/ticketAction";
 
 Vue.use(VueRouter)
 
@@ -70,7 +71,7 @@ const router = new VueRouter({
           path: '/controlCenter/scenery/sceneryAction',
           component: sceneryAction,
           meta: {
-            title: '景点',
+            title: '景点信息操作',
             opinions: [{ name: '控制中心', url: null }, { name: '页面景点配置', url: '/controlCenter/scenery' }, { name: '景点信息操作', url: '/controlCenter/scenery/sceneryAction' }]
           }
         },
@@ -80,6 +81,14 @@ const router = new VueRouter({
           meta: {
             title: '页面门票配置',
             opinions: [{ name: '控制中心', url: null }, { name: '页面门票配置', url: '/controlCenter/ticket' }]
+          }
+        },
+        {
+          path: '/controlCenter/ticket/ticketAction',
+          component: ticketAction,
+          meta: {
+            title: '景点门票操作',
+            opinions: [{ name: '控制中心', url: null }, { name: '页面门票配置', url: '/controlCenter/ticket' }, { name: '景点门票操作', url: '/controlCenter/ticket/ticketAction' }]
           }
         },
         {

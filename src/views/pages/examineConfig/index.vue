@@ -57,7 +57,7 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
-                        style="margin-top: 10px"
+                        style="padding-top: 10px"
                         background
                         layout="prev, pager, next, jumper"
                         :total="total"
@@ -126,7 +126,7 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
-                        style="margin-top: 10px"
+                        style="padding-top: 10px"
                         background
                         layout="prev, pager, next, jumper"
                         :total="total"
@@ -179,7 +179,7 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
-                        style="margin-top: 10px"
+                        style="padding-top: 10px"
                         background
                         layout="prev, pager, next, jumper"
                         :total="total"
@@ -237,7 +237,7 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
-                        style="margin-top: 10px"
+                        style="padding-top: 10px"
                         background
                         layout="prev, pager, next, jumper"
                         :total="total"
@@ -278,6 +278,7 @@
 
 <script>
     import base from '../../../untils/base'
+    import isPower from "../../../untils/userPower";
 
     export default {
         data() {
@@ -363,36 +364,39 @@
                     this.isShowDialog = false
             },
             getExamine(id, status) {
-                this.$confirm(status === 1 ? '发起文章审核, 是否继续?' : '文章审核通过, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    console.log(id)
-                    const params = {
-                        id: id,
-                        status: status
-                    }
-                    this.$axios.post(`${base.address}/api/v1/records/PC/editStatus`, params).then(res => {
-                        if (res.data.code === 200) {
-                            this.$notify.success({
-                                title: '提示',
-                                showClose: false,
-                                message: '请求成功,正在刷新列表。。。',
-                                duration: 1000,
-                                onClose: () => {
-                                    this.getData(status - 1)
-                                }
-                            });
+                if (isPower()){
+                    this.$confirm(status === 1 ? '发起文章审核, 是否继续?' : '文章审核通过, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        console.log(id)
+                        const params = {
+                            id: id,
+                            status: status
                         }
+                        this.$axios.post(`${base.address}/api/v1/records/PC/editStatus`, params).then(res => {
+                            if (res.data.code === 200) {
+                                this.$notify.success({
+                                    title: '提示',
+                                    showClose: false,
+                                    message: '请求成功,正在刷新列表。。。',
+                                    duration: 1000,
+                                    onClose: () => {
+                                        this.getData(status - 1)
+                                    }
+                                });
+                            }
+                        })
+                    }).catch(() => {
                     })
-                }).catch(() => {
-                })
+                }
             },
             getNoExamine(id) {
-                this.isShowNoExamine = true
-                this.form.id = id
-
+                if (isPower()){
+                    this.isShowNoExamine = true
+                    this.form.id = id
+                }
             },
             noExamineSubmit() {
                 this.isShowNoExamine = false
@@ -440,6 +444,6 @@
 <style scoped lang="less">
     .container {
         height: 100%;
-        padding: 15px 30px;
+        padding: 0 30px;
     }
 </style>

@@ -62,6 +62,7 @@
 
 <script>
     import base from "@/untils/base";
+    import isPower from "../../../untils/userPower";
 
     export default {
         components: {},
@@ -107,29 +108,33 @@
                 console.log(index, value)
             },
             save() {
-                if (this.list.length > 0){
-                    this.$axios.post(base.address + '/api/v1/common/editBanner',{list:this.list,_id:'5feafb4bc22186d7b516ff2e'}).then(res =>{
-                        if (res.data.code === 200){
-                            this.$notify({
-                                title: '提示信息',
-                                message:'保存成功',
-                                type: 'success',
-                                duration:1000
-                            });
-                        }
-                    }).catch(error =>{
-                        console.log(error)
-                    })
+                if (isPower()){
+                    if (this.list.length > 0){
+                        this.$axios.post(base.address + '/api/v1/common/editBanner',{list:this.list,_id:'5feafb4bc22186d7b516ff2e'}).then(res =>{
+                            if (res.data.code === 200){
+                                this.$notify({
+                                    title: '提示信息',
+                                    message:'保存成功',
+                                    type: 'success',
+                                    duration:1000
+                                });
+                            }
+                        }).catch(error =>{
+                            console.log(error)
+                        })
+                    }
                 }
             },
             add() {
-                const newBanner = {
-                    indexNow: this.list.length,
-                    src: '',
-                    sort: null,
-                    aboutPage: null
+                if (isPower()){
+                    const newBanner = {
+                        indexNow: this.list.length,
+                        src: '',
+                        sort: null,
+                        aboutPage: null
+                    }
+                    this.list.push(newBanner)
                 }
-                this.list.push(newBanner)
             }
         },
     };

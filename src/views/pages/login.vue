@@ -21,7 +21,7 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="checked" style="float: left">记住我</el-checkbox>
-          <el-link type="primary" :underline="false" style="float:right">忘记密码？</el-link>
+          <el-link type="primary" :underline="false" style="float:right" @click="forgetPassword">忘记密码？</el-link>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm" class="btn">登录</el-button>
@@ -104,6 +104,11 @@ export default {
     },
     resetForm() {
       this.$refs.ruleForm.resetFields();
+    },
+    forgetPassword(){
+      this.$alert('目前暂不提供密码修改，如需修改请联系管理员', '提示', {
+        confirmButtonText: '确定'
+      });
     }
   },
 };

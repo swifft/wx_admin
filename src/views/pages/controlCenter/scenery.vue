@@ -140,6 +140,7 @@
 <script>
     import base from "@/untils/base";
     import loadsh from 'loadsh';
+    import isPower from "../../../untils/userPower";
 
     export default {
         data() {
@@ -172,21 +173,25 @@
                 })
             },
             addScenery() {
-                this.$router.push({
-                    path: '/controlCenter/scenery/sceneryAction',
-                    query: {
-                        actionType: 'add'
-                    }
-                })
+                if (isPower()){
+                    this.$router.push({
+                        path: '/controlCenter/scenery/sceneryAction',
+                        query: {
+                            actionType: 'add'
+                        }
+                    })
+                }
             },
             editData(id){
-                this.$router.push({
-                    path: '/controlCenter/scenery/sceneryAction',
-                    query: {
-                        actionType: 'edit',
-                        id:id
-                    }
-                })
+                if (isPower()){
+                    this.$router.push({
+                        path: '/controlCenter/scenery/sceneryAction',
+                        query: {
+                            actionType: 'edit',
+                            id:id
+                        }
+                    })
+                }
             }
         }
     }
