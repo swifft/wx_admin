@@ -84,8 +84,8 @@
                 </el-form>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogClose">取 消</el-button>
                 <el-button type="primary" @click="addUser">确 定</el-button>
+                <el-button type="primary" @click="dialogClose">取 消</el-button>
             </span>
         </el-dialog>
         <el-dialog
@@ -114,8 +114,8 @@
                 </el-form>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogEditClose">取 消</el-button>
                 <el-button type="primary" @click="editUser">确 定</el-button>
+                <el-button type="primary" @click="dialogEditClose">取 消</el-button>
             </span>
         </el-dialog>
     </div>

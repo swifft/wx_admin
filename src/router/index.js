@@ -12,8 +12,9 @@ import examineConfig from "@/views/pages/examineConfig";
 import interfaceTotal from "@/views/pages/dataCenter/interfaceTotal";
 import interfaceAction from "@/views/pages/dataCenter/interfaceAction";
 import personal from "@/views/pages/systemCenter/personal";
-import systemAuthority from "../views/pages/systemCenter/systemAuthority";
-import ticketAction from "../views/pages/controlCenter/ticketAction";
+import systemAuthority from "@/views/pages/systemCenter/systemAuthority";
+import ticketAction from "@/views/pages/controlCenter/ticketAction";
+import wxUserTotal from "@/views/pages/dataCenter/wxUserTotal";
 
 Vue.use(VueRouter)
 
@@ -89,6 +90,14 @@ const router = new VueRouter({
           meta: {
             title: '景点门票操作',
             opinions: [{ name: '控制中心', url: null }, { name: '页面门票配置', url: '/controlCenter/ticket' }, { name: '景点门票操作', url: '/controlCenter/ticket/ticketAction' }]
+          }
+        },
+        {
+          path: '/dataCenter/wxUserTotal',
+          component: wxUserTotal,
+          meta: {
+            title: '微信用户统计',
+            opinions: [{ name: '数据中心', url: null }, { name: '微信用户统计', url: '/dataCenter/wxUserTotal' }]
           }
         },
         {

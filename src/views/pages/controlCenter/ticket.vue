@@ -3,6 +3,7 @@
     <el-card style="height: 735px;">
       <div slot="header">
         <span>景点门票信息列表</span>
+        <el-link type="primary" style="float: right; padding: 3px 0" :underline="false" @click="showPopup">添加门票</el-link>
       </div>
       <el-table
               :data="tableData"
@@ -84,7 +85,23 @@
         </div>
       </div>
     </el-dialog>
-
+    <el-dialog
+            title="请点击要添加信息的景点"
+            :visible.sync="isShowPopup"
+            :close-on-click-modal="false"
+            center
+            width="25%"
+    >
+      <div class="popup_scenery">
+        <div v-for="(item,index) in sceneryList" :key="index" >
+          <ul>
+            <li @click="addTicket(item._id)">
+              {{item.name}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -97,8 +114,10 @@ export default {
   data() {
     return {
       tableData: [],
+      sceneryList:[],
       previewVisible:false,
-      previewData:null
+      previewData:null,
+      isShowPopup:false
     };
   },
   mounted() {
@@ -110,6 +129,19 @@ export default {
       this.$axios.get(`${base.address}/api/v1/ticket/list`).then(res => {
         if (res.data.code === 200) {
           this.tableData = res.data.data
+          this.$axios.get(`${base.address}/api/v1/scenery/getList_PC`).then(result => {
+            if (result.data.code === 200) {
+              let newData = result.data.data
+              newData.forEach((item,index) =>{
+                this.tableData.forEach((item_x,index_x) =>{
+                  if (item.name === item_x.sceneryId.name){
+                    newData.splice(index,1)
+                  }
+                })
+              })
+              this.sceneryList = newData
+            }
+          })
         }
       })
     },
@@ -141,6 +173,9 @@ export default {
       this.previewVisible = true
       this.previewData = this.tableData[index].ticket_info
       console.log(this.previewData)
+    },
+    showPopup(){
+      this.isShowPopup = true
     }
   },
 };
@@ -212,6 +247,26 @@ export default {
     }
   }
 
+  .popup_scenery{
+    height: 60vh;
+    overflow: auto;
+
+    ul{
+      padding: 5px 35px;
+
+      li{
+        list-style-type :none;
+        border-radius: 14px;
+        padding: 20px 10px;
+        height: 15px;
+        line-height: 15px;
+        text-align: center;
+        background-color: #C0C4CC;
+        cursor: pointer;
+      }
+    }
+  }
+
 
   .box::-webkit-scrollbar {/*滚动条整体样式*/
     width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
@@ -226,5 +281,19 @@ export default {
     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
     border-radius: 10px;
     background: #EDEDED;
+  }
+
+  .popup_scenery::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 3px;     /*高宽分别对应横竖滚动条的尺寸*/
+  }
+  .popup_scenery::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: #dddee0;
+  }
+  .popup_scenery::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);*/
+    border-radius: 10px;
+    background: #ffffff;
   }
 </style>

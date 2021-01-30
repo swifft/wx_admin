@@ -41,13 +41,9 @@
           <i class="el-icon-s-marketing"></i>
           <span>数据中心</span>
         </template>
-        <el-menu-item index="3-1">
+        <el-menu-item index="/dataCenter/wxUserTotal">
           <i class="el-icon-s-order"></i>
-          <span slot="title">新增用户统计</span>
-        </el-menu-item>
-        <el-menu-item index="3-2">
-          <i class="el-icon-s-order"></i>
-          <span slot="title">用户数量统计</span>
+          <span slot="title">微信用户统计</span>
         </el-menu-item>
         <el-menu-item index="/dataCenter/interfaceTotal">
           <i class="el-icon-s-order"></i>
