@@ -105,7 +105,7 @@
             },
             getAllBySort(list_pc,list_miniApp){
                 list_pc.forEach(item =>{
-                    this.$axios.get(`${base.address}/api/v1/getAPI/allApiBySort?sort=${item}`).then(res =>{
+                    this.$axios.get(`${base.address}/api/v1/getAPI/allApiBySort?sort=${item}&type=0`).then(res =>{
                         if (res.data.code === 200){
                             let newData = {
                                 sort:item,
@@ -118,7 +118,7 @@
                     })
                 })
                 list_miniApp.forEach(item =>{
-                    this.$axios.get(`${base.address}/api/v1/getAPI/allApiBySort?sort=${item}`).then(res =>{
+                    this.$axios.get(`${base.address}/api/v1/getAPI/allApiBySort?sort=${item}&type=1`).then(res =>{
                         if (res.data.code === 200){
                             let newData = {
                                 sort:item,
