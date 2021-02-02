@@ -47,7 +47,7 @@
                                 <el-button icon="el-icon-document-copy" type="text" @click="copy(i_item.url)"
                                            class="copy" size="mini"></el-button>
                             </div>
-                            <div class="desc">{{i_item.desc}}</div>
+                            <div class="desc">{{i_item.desc}}<span v-if="i_item.extraInfo" style="background-color: red;color: #ffffff;padding: 2px 5px;border-radius: 10px;margin-left: 10px">{{i_item.extraInfo ? i_item.extraInfo : null}}</span></div>
                             <el-button @click="edit(i_item._id)" size="mini" v-show="user.authority === 1">编辑</el-button>
                         </div>
                     </div>
